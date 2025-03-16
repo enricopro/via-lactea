@@ -1,8 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://cdyoqe11modui"]
+[gd_scene load_steps=3 format=3 uid="uid://cdyoqe11modui"]
 
 [ext_resource type="PackedScene" uid="uid://3r4h1apofjwb" path="res://scenes/spaceship.tscn" id="1_ayjky"]
+[ext_resource type="PackedScene" uid="uid://dlb0yxsgh3qjf" path="res://scenes/border.tscn" id="2_sd8ln"]
 
 [node name="Game" type="Node2D"]
 
-[node name="CharacterBody2D" parent="." instance=ExtResource("1_ayjky")]
+[node name="Spaceship" parent="." instance=ExtResource("1_ayjky")]
 position = Vector2(572, 291)
+
+[node name="GameBorders" type="Node2D" parent="."]
+
+[node name="BorderUp" parent="GameBorders" instance=ExtResource("2_sd8ln")]
+position = Vector2(575, 0)
+rotation = -3.14159
+
+[node name="BorderDown" parent="GameBorders" instance=ExtResource("2_sd8ln")]
+position = Vector2(575, 650)
+
+[node name="BorderLeft" parent="GameBorders" instance=ExtResource("2_sd8ln")]
+position = Vector2(0, 325)
+rotation = 1.5708
+
+[node name="BorderRight" parent="GameBorders" instance=ExtResource("2_sd8ln")]
+position = Vector2(1150, 325)
+rotation = -1.5708
