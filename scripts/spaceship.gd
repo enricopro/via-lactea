@@ -1,10 +1,11 @@
 extends CharacterBody2D
 
-@export var acceleration: float = 900.0  # How fast the ship accelerates
+@export var acceleration: float = 1100.0  # How fast the ship accelerates
 @export var max_speed: float = 2000.0    # Max speed to prevent infinite acceleration
 @export var rotation_speed: float = 3.0  # How fast the ship rotates
 @export var damping: float = 0.98        # How much inertia slows down movement
-@export var bounce_factor: float = 0.8   # How much velocity is retained after bouncing (1.0 = full bounce, 0.0 = no bounce)
+@export var bounce_factor: float = 1.3   # How much velocity is retained after bouncing (1.0 = full bounce, 0.0 = no bounce)
+@export var min_bounce_speed: float = 300.0  # Ensures a minimum bounce effect
 
 const BASE_SCREEN_SIZE: Vector2 = Vector2(1920, 1080)  # Reference resolution
 const BASE_SCALE: float = 2.0  # Default scale at 1920x1080
@@ -45,11 +46,15 @@ func _physics_process(delta: float) -> void:
 
 func _handle_bounce(collision: KinematicCollision2D) -> void:
 	var collider = collision.get_collider()
-	
-	var border_names = ["BorderUp", "BorderDown", "BorderLeft", "BorderRight"]
-	
-	if collider and collider.name in border_names:
-		print("Bounced off: ", collider.name)
 
+	var border_names = ["BorderUp", "BorderDown", "BorderLeft", "BorderRight"]
+
+	if collider and collider.name in border_names:
 		var normal = collision.get_normal()
-		velocity = velocity.bounce(normal) * bounce_factor
+		var new_velocity = velocity.bounce(normal) * bounce_factor
+
+		# Ensure a minimum bounce velocity
+		if new_velocity.length() < min_bounce_speed:
+			new_velocity = new_velocity.normalized() * min_bounce_speed
+		
+		velocity = new_velocity
