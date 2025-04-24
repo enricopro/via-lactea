@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://3r4h1apofjwb"]
+[gd_scene load_steps=10 format=3 uid="uid://3r4h1apofjwb"]
 
 [ext_resource type="Script" path="res://scripts/spaceship.gd" id="1_bs6n1"]
 [ext_resource type="Texture2D" uid="uid://4sgovotiyr1n" path="res://assets/main_ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png" id="1_px5mo"]
 [ext_resource type="Texture2D" uid="uid://bmc415mol5pvw" path="res://assets/main_ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png" id="3_q5elw"]
+[ext_resource type="AudioStream" uid="uid://c4c0o78wynu0f" path="res://assets/sounds/booster_sound_effect.mp3" id="4_ld2a4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qbsj2"]
 atlas = ExtResource("3_q5elw")
@@ -53,4 +54,9 @@ polygon = PackedVector2Array(544, 300, 546, 300, 546, 301, 547, 301, 547, 302, 5
 [node name="EngineEffect" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_kolbh")
 autoplay = "default"
-frame_progress = 0.341257
+frame_progress = 0.923675
+
+[node name="EngineSoundEffect" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_ld2a4")
+volume_db = -6.0
+parameters/looping = true
