@@ -1,17 +1,25 @@
 extends CharacterBody2D
 
 @export var acceleration: float = 1100.0
-@export var max_speed: float = 2000.0
+@export var max_speed:     float = 2000.0
 @export var rotation_speed: float = 3.0
-@export var damping: float = 0.98
+@export var damping:       float = 0.98
 @export var bounce_factor: float = 1.3
 @export var min_bounce_speed: float = 300.0
 
 const BASE_SCREEN_SIZE: Vector2 = Vector2(1920, 1080)
 const BASE_SCALE: float = 2.0
 
-@onready var engine_effect: AnimatedSprite2D = get_node("EngineEffect")
-@onready var engine_sound: AudioStreamPlayer2D = get_node("EngineSoundEffect")   # <— NEW
+@onready var engine_effect: AnimatedSprite2D    = get_node("EngineEffect")
+@onready var engine_sound:  AudioStreamPlayer2D = get_node("EngineSoundEffect")
+
+# -------------------------------------------------------------------------
+# Shooting configuration  (hard-coded muzzle)
+# -------------------------------------------------------------------------
+@export var bullet_scene:    PackedScene = preload("res://scenes/bullet.tscn")
+@export var fire_rate:       float = 0.15       # seconds between shots
+@export var muzzle_distance: float = 50.0       # distance from ship origin to gun barrel
+var _cooldown: float = 0.0                      # internal gun timer
 
 func _ready() -> void:
 	velocity = Vector2.ZERO
@@ -29,7 +37,7 @@ func _physics_process(delta: float) -> void:
 
 	# --- Audio ------------------------------------------------------------
 	if is_thrusting:
-		if not engine_sound.playing:          # start once, loop is ON
+		if not engine_sound.playing:
 			engine_sound.play()
 	else:
 		if engine_sound.playing:
@@ -43,13 +51,17 @@ func _physics_process(delta: float) -> void:
 
 	# --- Thrust -----------------------------------------------------------
 	if is_thrusting:
-		var thrust: Vector2 = Vector2.UP.rotated(rotation) * acceleration * delta
-		velocity += thrust
+		velocity += Vector2.UP.rotated(rotation) * acceleration * delta
+
+	# --- Shooting ---------------------------------------------------------
+	_cooldown = max(_cooldown - delta, 0.0)
+	if Input.is_action_just_pressed("shoot") and _cooldown == 0.0:
+		_shoot()
+		_cooldown = fire_rate
 
 	# --- Speed clamp & damping -------------------------------------------
 	if velocity.length() > max_speed:
 		velocity = velocity.normalized() * max_speed
-
 	velocity *= damping
 
 	# --- Movement & bounce ------------------------------------------------
@@ -57,13 +69,24 @@ func _physics_process(delta: float) -> void:
 	if collision:
 		_handle_bounce(collision)
 
+# -------------------------------------------------------------------------
+#  Helper functions
+# -------------------------------------------------------------------------
+func _shoot() -> void:
+	# Compute a spawn position “muzzle_distance” units in front of the ship
+	var spawn_pos: Vector2 = global_position + Vector2.UP.rotated(rotation) * muzzle_distance
+
+	var bullet := bullet_scene.instantiate() as Area2D
+	bullet.global_position = spawn_pos
+	bullet.rotation        = rotation
+	get_tree().current_scene.add_child(bullet)
+
 func _handle_bounce(collision: KinematicCollision2D) -> void:
 	var collider = collision.get_collider()
 	var border_names = ["BorderUp", "BorderDown", "BorderLeft", "BorderRight"]
 
 	if collider and collider.name in border_names:
-		var normal = collision.get_normal()
-		var new_velocity = velocity.bounce(normal) * bounce_factor
+		var new_velocity = velocity.bounce(collision.get_normal()) * bounce_factor
 
 		if new_velocity.length() < min_bounce_speed:
 			new_velocity = new_velocity.normalized() * min_bounce_speed
