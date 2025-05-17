@@ -12,6 +12,7 @@ const BASE_SCALE: float = 2.0
 
 @onready var engine_effect: AnimatedSprite2D    = get_node("EngineEffect")
 @onready var engine_sound:  AudioStreamPlayer2D = get_node("EngineSoundEffect")
+@onready var shoot_sound: AudioStreamPlayer2D = get_node("ShootSoundEffect")
 
 # -------------------------------------------------------------------------
 # Shooting configuration  (hard-coded muzzle)
@@ -73,13 +74,14 @@ func _physics_process(delta: float) -> void:
 #  Helper functions
 # -------------------------------------------------------------------------
 func _shoot() -> void:
-	# Compute a spawn position “muzzle_distance” units in front of the ship
 	var spawn_pos: Vector2 = global_position + Vector2.UP.rotated(rotation) * muzzle_distance
 
 	var bullet := bullet_scene.instantiate() as Area2D
 	bullet.global_position = spawn_pos
-	bullet.rotation        = rotation
+	bullet.rotation = rotation
 	get_tree().current_scene.add_child(bullet)
+
+	shoot_sound.play()
 
 func _handle_bounce(collision: KinematicCollision2D) -> void:
 	var collider = collision.get_collider()

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://cdyoqe11modui"]
+[gd_scene load_steps=5 format=3 uid="uid://cdyoqe11modui"]
 
 [ext_resource type="PackedScene" uid="uid://3r4h1apofjwb" path="res://scenes/spaceship.tscn" id="1_ayjky"]
 [ext_resource type="PackedScene" uid="uid://dlb0yxsgh3qjf" path="res://scenes/border.tscn" id="2_sd8ln"]
 [ext_resource type="Texture2D" uid="uid://cakci0osis8v7" path="res://scenes/space_background.jpeg" id="3_a8yq6"]
+[ext_resource type="PackedScene" uid="uid://b0y6h45x0rpf7" path="res://scenes/sentinel.tscn" id="4_6cnt6"]
 
 [node name="Game" type="Node2D"]
 
@@ -31,3 +32,6 @@ z_index = -1
 texture = ExtResource("3_a8yq6")
 texture_scale = Vector2(2, 2)
 polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 648, 0, 648)
+
+[node name="Sentinel" parent="." instance=ExtResource("4_6cnt6")]
+position = Vector2(212, 159)

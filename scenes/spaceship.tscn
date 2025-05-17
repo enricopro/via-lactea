@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://3r4h1apofjwb"]
+[gd_scene load_steps=11 format=3 uid="uid://3r4h1apofjwb"]
 
 [ext_resource type="Script" path="res://scripts/spaceship.gd" id="1_bs6n1"]
 [ext_resource type="Texture2D" uid="uid://4sgovotiyr1n" path="res://assets/main_ship/Main Ship - Bases/PNGs/Main Ship - Base - Full health.png" id="1_px5mo"]
 [ext_resource type="Texture2D" uid="uid://bmc415mol5pvw" path="res://assets/main_ship/Main Ship - Engine Effects/PNGs/Main Ship - Engines - Supercharged Engine - Powering.png" id="3_q5elw"]
 [ext_resource type="AudioStream" uid="uid://c4c0o78wynu0f" path="res://assets/sounds/booster_sound_effect.mp3" id="4_ld2a4"]
+[ext_resource type="AudioStream" uid="uid://cq83s72uw1ick" path="res://assets/sounds/shoot_1.mp3" id="5_2uco8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qbsj2"]
 atlas = ExtResource("3_q5elw")
@@ -60,3 +61,7 @@ frame_progress = 0.923675
 stream = ExtResource("4_ld2a4")
 volume_db = -6.0
 parameters/looping = true
+
+[node name="ShootSoundEffect" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_2uco8")
+volume_db = -6.0
