@@ -10,6 +10,10 @@ var current_lives: int = max_lives
 @export var bounce_factor: float = 1.3
 @export var min_bounce_speed: float = 300.0
 
+@export var heart_scene: PackedScene = preload("res://scenes/heart.tscn")
+@onready var hearts_container := get_tree().current_scene.get_node("HUD/HeartsContainer")
+var hearts: Array = []
+
 const BASE_SCREEN_SIZE: Vector2 = Vector2(1920, 1080)
 const BASE_SCALE: float = 2.0
 
@@ -27,6 +31,12 @@ var _cooldown: float = 0.0                      # internal gun timer
 
 func _ready() -> void:
 	velocity = Vector2.ZERO
+
+	# Create hearts based on max_lives
+	for i in range(max_lives):
+		var heart = heart_scene.instantiate()
+		hearts_container.add_child(heart)
+		hearts.append(heart)
 
 	var screen_size = get_viewport_rect().size
 	var scale_factor = min(screen_size.x / BASE_SCREEN_SIZE.x,
@@ -88,7 +98,10 @@ func _shoot() -> void:
 
 func take_damage(amount: int = 1) -> void:
 	current_lives -= amount
-	print("Player hit! Lives left: ", current_lives)
+
+	# Hide the heart if still in range
+	if current_lives >= 0 and current_lives < hearts.size():
+		hearts[current_lives].visible = false
 
 	if current_lives <= 0:
 		game_over()
