@@ -1,6 +1,6 @@
-extends CharacterBody2D
-
-@export var speed: float = 0.0  # Tweakable enemy speed
+extends CharacterBody2D  
+ 
+@export var speed: float = 200.0  # Tweakable enemy speed
 var player: Node2D = null
 
 func _ready() -> void:
@@ -13,9 +13,16 @@ func _physics_process(delta: float) -> void:
 		rotation = direction.angle() + PI/2  # Rotate toward player
 		global_position += direction.normalized() * speed * delta
 
-func _on_body_entered(body: Node) -> void:
-	if body == player:
-		queue_free()  # Enemy disappears (you could trigger explosion here)
-		#player_explode()  # Optional: implement in player later
+func explode() -> void:
+	speed = 0
+	$Explosion/AudioStreamPlayer2D.play()
+	$Explosion.visible = true
+	$Explosion.play("default")
+	$Sprite2D.visible = false
+	$HitBox.set_deferred("disabled", true)
+	$CollisionPolygon2D.set_deferred("disabled", true)
+	$Explosion.animation_finished.connect(queue_free)
 
-# Connect this to the Area2D "body_entered" signal
+func _on_area_2d_body_entered(body: Node2D) -> void:
+	if body == player || body.is_in_group("bullets"):
+		explode()

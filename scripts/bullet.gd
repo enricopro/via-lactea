@@ -13,5 +13,5 @@ func _physics_process(delta: float) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("enemies"):
-		body.queue_free()   # Destroy the enemy
+		body._on_area_2d_body_entered(self)   # Destroy the enemy
 		queue_free()       # Destroy the bullet as well
