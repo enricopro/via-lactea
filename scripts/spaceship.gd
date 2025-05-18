@@ -1,5 +1,8 @@
 extends CharacterBody2D
 
+@export var max_lives: int = 3
+var current_lives: int = max_lives
+
 @export var acceleration: float = 1100.0
 @export var max_speed:     float = 2000.0
 @export var rotation_speed: float = 3.0
@@ -82,6 +85,17 @@ func _shoot() -> void:
 	get_tree().current_scene.add_child(bullet)
 
 	shoot_sound.play()
+
+func take_damage(amount: int = 1) -> void:
+	current_lives -= amount
+	print("Player hit! Lives left: ", current_lives)
+
+	if current_lives <= 0:
+		game_over()
+
+func game_over() -> void:
+	print("Game Over!")
+	get_tree().paused = true  # Pause the game for now
 
 func _handle_bounce(collision: KinematicCollision2D) -> void:
 	var collider = collision.get_collider()
