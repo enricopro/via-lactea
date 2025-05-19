@@ -14,6 +14,8 @@ var current_lives: int = max_lives
 @onready var hearts_container := get_parent().get_node("HUD/HeartsContainer")
 var hearts: Array = []
 
+@onready var damage_flash = get_parent().get_node("HUD/DamageFlash")
+
 const BASE_SCREEN_SIZE: Vector2 = Vector2(1920, 1080)
 const BASE_SCALE: float = 2.0
 
@@ -105,6 +107,14 @@ func take_damage(amount: int = 1) -> void:
 
 	if current_lives <= 0:
 		game_over()
+
+	# Set damage flashing screen overlay	
+	damage_flash.visible = true
+	damage_flash.modulate.a = 0.5  # Reset opacity
+
+	var tween = create_tween()
+	tween.tween_property(damage_flash, "modulate:a", 0.0, 0.3)
+	tween.finished.connect(func(): damage_flash.visible = false)
 
 func game_over() -> void:
 	get_tree().current_scene.show_game_over()
