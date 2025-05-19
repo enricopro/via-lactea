@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://3r4h1apofjwb" path="res://scenes/spaceship.tscn" id="1_ayjky"]
 [ext_resource type="PackedScene" uid="uid://dlb0yxsgh3qjf" path="res://scenes/border.tscn" id="2_sd8ln"]
 [ext_resource type="Texture2D" uid="uid://cakci0osis8v7" path="res://scenes/space_background.jpeg" id="3_a8yq6"]
-[ext_resource type="PackedScene" uid="uid://b0y6h45x0rpf7" path="res://scenes/sentinel.tscn" id="4_6cnt6"]
+[ext_resource type="AudioStream" uid="uid://ccs04km68mpep" path="res://assets/sounds/soundtrack_1.mp3" id="5_dpye8"]
 [ext_resource type="PackedScene" uid="uid://16agojx5ebbe" path="res://scenes/enemy_spawner.tscn" id="5_h8v7h"]
 
 [node name="Game" type="Node2D"]
@@ -34,9 +34,6 @@ texture = ExtResource("3_a8yq6")
 texture_scale = Vector2(2, 2)
 polygon = PackedVector2Array(0, 0, 1152, 0, 1152, 648, 0, 648)
 
-[node name="Sentinel" parent="." instance=ExtResource("4_6cnt6")]
-position = Vector2(212, 159)
-
 [node name="EnemySpawner" parent="." instance=ExtResource("5_h8v7h")]
 
 [node name="HUD" type="CanvasLayer" parent="."]
@@ -47,3 +44,9 @@ transform = Transform2D(0.5, 0, 0, 0.5, 15, 15)
 [node name="HeartsContainer" type="HBoxContainer" parent="HUD"]
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="Soundtrack" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_dpye8")
+volume_db = -12.0
+autoplay = true
+parameters/looping = true

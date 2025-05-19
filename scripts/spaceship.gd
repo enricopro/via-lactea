@@ -11,7 +11,7 @@ var current_lives: int = max_lives
 @export var min_bounce_speed: float = 300.0
 
 @export var heart_scene: PackedScene = preload("res://scenes/heart.tscn")
-@onready var hearts_container := get_tree().current_scene.get_node("HUD/HeartsContainer")
+@onready var hearts_container := get_parent().get_node("HUD/HeartsContainer")
 var hearts: Array = []
 
 const BASE_SCREEN_SIZE: Vector2 = Vector2(1920, 1080)
@@ -107,8 +107,7 @@ func take_damage(amount: int = 1) -> void:
 		game_over()
 
 func game_over() -> void:
-	print("Game Over!")
-	get_tree().paused = true  # Pause the game for now
+	get_tree().current_scene.show_game_over()
 
 func _handle_bounce(collision: KinematicCollision2D) -> void:
 	var collider = collision.get_collider()

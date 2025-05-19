@@ -1,0 +1,75 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqay4jfwvsv2w"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_3e2tv"]
+[ext_resource type="PackedScene" uid="uid://cdyoqe11modui" path="res://scenes/game.tscn" id="1_r0dnm"]
+
+[node name="MainScene" type="Node2D"]
+script = ExtResource("1_3e2tv")
+
+[node name="Game" parent="." instance=ExtResource("1_r0dnm")]
+visible = false
+
+[node name="Screens" type="CanvasLayer" parent="."]
+
+[node name="StartScreen" type="Control" parent="Screens"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -575.0
+offset_top = -327.5
+offset_right = 575.0
+offset_bottom = 327.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screens/StartScreen"]
+process_mode = 3
+layout_mode = 0
+offset_left = 459.0
+offset_top = 258.5
+offset_right = 694.0
+offset_bottom = 447.5
+
+[node name="Title" type="Label" parent="Screens/StartScreen/VBoxContainer"]
+layout_mode = 2
+text = "Via Lactea"
+
+[node name="PlayButton" type="Button" parent="Screens/StartScreen/VBoxContainer"]
+layout_mode = 2
+text = "Play"
+
+[node name="QuitButton" type="Button" parent="Screens/StartScreen/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[node name="GameOverScreen" type="Control" parent="Screens"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Screens/GameOverScreen"]
+process_mode = 3
+layout_mode = 0
+offset_left = 452.0
+offset_top = 254.0
+offset_right = 714.0
+offset_bottom = 478.0
+
+[node name="GameOverLabel" type="Label" parent="Screens/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "Game over!"
+
+[node name="GoHomeButton" type="Button" parent="Screens/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "Go Home"
+
+[node name="RetryButton" type="Button" parent="Screens/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+text = "Retry"
+
+[connection signal="pressed" from="Screens/StartScreen/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Screens/GameOverScreen/VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]

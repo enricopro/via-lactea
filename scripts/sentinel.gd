@@ -5,7 +5,7 @@ var player: Node2D = null
 
 func _ready() -> void:
 	# Find the player in the scene tree
-	player = get_tree().current_scene.get_node("Spaceship")
+	player = get_tree().current_scene.get_node("Game").get_node("Spaceship")
 
 func _physics_process(delta: float) -> void:
 	if player:
@@ -19,12 +19,18 @@ func explode() -> void:
 	$Explosion.visible = true
 	$Explosion.play("default")
 	$Sprite2D.visible = false
+
+	# Disable hitbox and body collisions
 	$HitBox.set_deferred("disabled", true)
 	$CollisionPolygon2D.set_deferred("disabled", true)
-	$Explosion.animation_finished.connect(queue_free)
+	collision_layer = 0
+	collision_mask = 0
 
+	# Queue free after animation finishes
+	$Explosion.animation_finished.connect(queue_free)
+	
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body == player || body.is_in_group("bullets"):
+		if body == player:
+			body.take_damage()
 		explode()
-	if body == player:
-		body.take_damage()
