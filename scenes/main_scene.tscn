@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqay4jfwvsv2w"]
+[gd_scene load_steps=6 format=3 uid="uid://cqay4jfwvsv2w"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_3e2tv"]
 [ext_resource type="PackedScene" uid="uid://cdyoqe11modui" path="res://scenes/game.tscn" id="1_r0dnm"]
+[ext_resource type="Texture2D" uid="uid://0lj0gt25usqe" path="res://assets/images/logo.png" id="3_h61cr"]
+[ext_resource type="AudioStream" uid="uid://ca0f5ckqvmg5" path="res://assets/sounds/soundtrack_2.mp3" id="3_yalxh"]
+[ext_resource type="Texture2D" uid="uid://byq1batl67nik" path="res://assets/images/start_screen_background.png" id="4_i4x7k"]
 
 [node name="MainScene" type="Node2D"]
 script = ExtResource("1_3e2tv")
@@ -28,14 +31,15 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="Screens/StartScreen"]
 process_mode = 3
 layout_mode = 0
-offset_left = 459.0
-offset_top = 258.5
-offset_right = 694.0
-offset_bottom = 447.5
+offset_left = 335.0
+offset_top = 166.0
+offset_right = 1359.0
+offset_bottom = 708.0
+scale = Vector2(0.5, 0.5)
 
-[node name="Title" type="Label" parent="Screens/StartScreen/VBoxContainer"]
+[node name="Logo" type="TextureRect" parent="Screens/StartScreen/VBoxContainer"]
 layout_mode = 2
-text = "Via Lactea"
+texture = ExtResource("3_h61cr")
 
 [node name="PlayButton" type="Button" parent="Screens/StartScreen/VBoxContainer"]
 layout_mode = 2
@@ -45,7 +49,23 @@ text = "Play"
 layout_mode = 2
 text = "Quit"
 
+[node name="StartScreenSoundtrack" type="AudioStreamPlayer2D" parent="Screens/StartScreen"]
+process_mode = 3
+stream = ExtResource("3_yalxh")
+volume_db = -12.0
+autoplay = true
+parameters/looping = true
+
+[node name="Background" type="TextureRect" parent="Screens/StartScreen"]
+z_index = -1
+layout_mode = 0
+offset_right = 1536.0
+offset_bottom = 1024.0
+mouse_filter = 2
+texture = ExtResource("4_i4x7k")
+
 [node name="GameOverScreen" type="Control" parent="Screens"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0

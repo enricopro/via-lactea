@@ -15,17 +15,21 @@ func _physics_process(delta: float) -> void:
 
 func explode() -> void:
 	speed = 0
+
+	# Disable hitbox and body collisions
+	$HitBox.set_deferred("disabled", true)
+	$HitBox.collision_layer = 0
+	$HitBox.collision_mask = 0
+
+	$CollisionPolygon2D.set_deferred("disabled", true)
+	collision_layer = 0
+	collision_mask = 0
+	
 	$Explosion/AudioStreamPlayer2D.play()
 	$Explosion.visible = true
 	$Explosion.play("default")
 	$Sprite2D.visible = false
-
-	# Disable hitbox and body collisions
-	$HitBox.set_deferred("disabled", true)
-	$CollisionPolygon2D.set_deferred("disabled", true)
-	collision_layer = 0
-	collision_mask = 0
-
+	
 	# Queue free after animation finishes
 	$Explosion.animation_finished.connect(queue_free)
 	
